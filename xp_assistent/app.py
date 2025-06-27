@@ -10,15 +10,19 @@ dspy.configure(lm=gemini)
 
 code_generator = dspy.Predict(RefactorSignature)
 
-with open('test_code/test_fibonacci.py') as f:
+PROJECT_DIR = '/Users/timberkerkvliet/PycharmProjects/fibonacci'
+TEST_FILE = 'test_fibonacci.py'
+PROD_FILE = 'fibo.py'
+
+with open(f'{PROJECT_DIR}/{TEST_FILE}') as f:
     test_code = f.read()
 
-with open('test_code/fibo.py') as f:
+with open(f'{PROJECT_DIR}/{PROD_FILE}') as f:
     prod_code = f.read()
 
-res = code_generator(test_code=test_code, prod_code=prod_code, refactor_hint='Clean up')
+res = code_generator(test_code=test_code, prod_code=prod_code, refactor_hint=...)
 
-with open('test_code/fibo.py', 'wb') as f:
+with open(f'{PROJECT_DIR}/{PROD_FILE}', 'wb') as f:
     f.write(res.python_code.encode())
 
-os.system("python -m unittest test_fibo.py || git reset --hard")
+os.system(f"cd {PROJECT_DIR} && (python -m unittest {TEST_FILE} || git reset --hard)")
