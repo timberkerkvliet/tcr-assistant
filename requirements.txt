@@ -1,1 +1,2 @@
-openai
+dspy-ai
+google-generativeai
