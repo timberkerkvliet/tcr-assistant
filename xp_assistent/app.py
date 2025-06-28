@@ -27,14 +27,19 @@ while True:
     with open(f'{PROJECT_DIR}/{PROD_FILE}', 'wb') as f:
         f.write(res.python_code.encode())
 
-    os.system(
-        f'''cd {PROJECT_DIR} && (
-            echo "Running tests..." &&
-            python -m unittest {TEST_FILE} &&
-            echo "✅ Tests passed. Committing..." &&
-            git commit -am "Passing tests"
-        ) || (
-            echo "❌ Tests failed. Reverting..." &&
-            git reset --hard
-        )'''
-    )
+    exit_code = os.system(f"cd {PROJECT_DIR} && python -m unittest {TEST_FILE}")
+
+    if exit_code == 0:
+        print("✅ Tests passed.\n")
+
+        # Ask for approval
+        approve = input("\nDo you want to commit these changes? (y/n): ").strip().lower()
+        if approve == "y":
+            os.system(f'cd {PROJECT_DIR} && git commit -am "Passing tests"')
+            print("✅ Changes committed.")
+        else:
+            os.system(f"cd {PROJECT_DIR} && git reset --hard")
+            print("❌ Changes reverted.")
+    else:
+        print("❌ Tests failed. Reverting changes...")
+        os.system(f"cd {PROJECT_DIR} && git reset --hard")
