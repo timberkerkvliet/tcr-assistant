@@ -1,9 +1,9 @@
 import openai
 from openai import Client
 
-from xp_assistent.llm_client import LLMClient
-from xp_assistent.llm_conversation import LLMConversation
-from xp_assistent.openai_conversation import OpenAIConversation
+from xp_assistant.llm_client import LLMClient
+from xp_assistant.llm_conversation import LLMConversation
+from xp_assistant.openai_conversation import OpenAIConversation
 
 
 class OpenAIClient(LLMClient):

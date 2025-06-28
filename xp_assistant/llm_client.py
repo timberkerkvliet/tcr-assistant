@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from xp_assistent.llm_conversation import LLMConversation
+from xp_assistant.llm_conversation import LLMConversation
 
 
 class LLMClient(ABC):

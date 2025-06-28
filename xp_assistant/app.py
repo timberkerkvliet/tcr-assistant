@@ -2,7 +2,7 @@ import os
 
 import dspy
 
-from xp_assistent.signature import RefactorSignature
+from xp_assistant.signature import RefactorSignature
 
 api_key = os.environ["OPENAI_KEY"]
 gemini = dspy.LM(model='openai/gpt-4o-mini', api_key=api_key)

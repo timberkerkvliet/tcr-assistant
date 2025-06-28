@@ -1,8 +1,8 @@
 import google.generativeai as genai
 import os
 
-from xp_assistent.llm_client import LLMClient
-from xp_assistent.llm_conversation import LLMConversation
+from xp_assistant.llm_client import LLMClient
+from xp_assistant.llm_conversation import LLMConversation
 
 
 class GeminiConversation(LLMConversation):

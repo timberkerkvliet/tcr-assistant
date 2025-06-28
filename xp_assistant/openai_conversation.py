@@ -3,7 +3,7 @@ import time
 import openai
 from openai import OpenAIError, Client
 
-from xp_assistent.llm_conversation import LLMConversation
+from xp_assistant.llm_conversation import LLMConversation
 
 
 class OpenAIConversation(LLMConversation):
