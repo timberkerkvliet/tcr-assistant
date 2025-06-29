@@ -1,21 +1,18 @@
 import dspy
 
 
-class RefactorSignature(dspy.Signature):
-    test_code = dspy.InputField(
-        desc="A set of unit tests that describe the behaviour of the production code. The refactored code should still pass these test."
-    )
-    prod_code = dspy.InputField(
-        desc="The production code that needs refactoring"
-    )
-    refactor_hint = dspy.InputField(
-        desc="Refactor hint"
+
+class ChangeExistingCode(dspy.Signature):
+    current_code = dspy.InputField(
+        desc="The code that need to be changed"
     )
 
-    # OutputField defines what we expect the model to generate.
+    main_goal = dspy.InputField(desc="The main goal of the change")
+
+    constraints = dspy.InputField(desc="Everything the output code needs to satisfy")
+
     python_code = dspy.OutputField(
-        desc="The refactored production code",
+        desc="The output code",
         prefix="```python\n", # A prefix helps guide the model's output format.
         suffix="\n```"
     )
-

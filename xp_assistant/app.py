@@ -2,10 +2,12 @@ import os
 
 import dspy
 
-from xp_assistant.version_control.revert import RevertPrintLine
-from xp_assistant.version_control.revert import RevertChanges, GitRevert
+from xp_assistant.feedback.test_feedback import TestFeedback
+from xp_assistant.signature import ChangeExistingCode
 from xp_assistant.version_control.commit import CommitChanges, GitCommit, CommitPrintLine
-from xp_assistant.signature import RefactorSignature
+from xp_assistant.version_control.revert import RevertChanges, GitRevert
+from xp_assistant.version_control.revert import RevertPrintLine
+
 
 class App:
     def __init__(
@@ -19,29 +21,30 @@ class App:
     def run(self):
         while True:
             refactor_hint = input("Refactor hint: ")
-            with open(f'{PROJECT_DIR}/{TEST_FILE}') as f:
-                test_code = f.read()
-
             with open(f'{PROJECT_DIR}/{PROD_FILE}') as f:
                 prod_code = f.read()
 
-            res = code_generator(test_code=test_code, prod_code=prod_code, refactor_hint=refactor_hint)
+            code_generator = dspy.Predict(ChangeExistingCode)
+
+            feedback = TestFeedback(PROJECT_DIR, TEST_FILE)
+
+            res = code_generator(
+                current_code=prod_code,
+                main_goal=f'Refactor with hint: {refactor_hint}',
+                constraints=feedback.get_constraint()
+            )
 
             with open(f'{PROJECT_DIR}/{PROD_FILE}', 'wb') as f:
                 f.write(res.python_code.encode())
 
-            exit_code = os.system(f"cd {PROJECT_DIR} && python -m unittest {TEST_FILE}")
+            res = feedback.get_feedback()
 
-            if exit_code == 0:
-                print("✅ Tests passed.\n")
-
-                # Ask for approval
+            if res.is_ok():
                 approve = input("\nDo you want to commit these changes? (y/n): ").strip().lower()
                 if approve == "y":
                     self._commit_changes.commit()
                 else:
                     self._revert_changes.revert()
-                    print("❌ Changes reverted.")
             else:
                 print("❌ Tests failed. Reverting changes...")
                 self._revert_changes.revert()
@@ -51,7 +54,7 @@ api_key = os.environ["OPENAI_KEY"]
 gemini = dspy.LM(model='openai/gpt-4o-mini', api_key=api_key)
 dspy.configure(lm=gemini)
 
-code_generator = dspy.Predict(RefactorSignature)
+
 
 PROJECT_DIR = '/Users/timberkerkvliet/PycharmProjects/fibonacci'
 TEST_FILE = 'fibonacci/test_fibonacci.py'
