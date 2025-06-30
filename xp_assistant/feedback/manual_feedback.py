@@ -15,6 +15,6 @@ class ManualFeedback(FeedbackMechanism):
         if approve == "y":
             return Ok('Manually approved')
 
-        why = input("\nWhy is it not ok? (y/n): ").strip().lower()
+        why = input("\nWhy is it not ok?: ").strip().lower()
 
         return NotOk(why)
