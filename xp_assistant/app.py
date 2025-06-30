@@ -2,6 +2,8 @@ import os
 
 import dspy
 
+from xp_assistant.feedback.feedback_chain import FeedbackChain
+from xp_assistant.feedback.manual_feedback import ManualFeedback
 from xp_assistant.feedback.print_feedback import PrintFeedback
 from xp_assistant.feedback.test_feedback import TestFeedback
 from xp_assistant.signature import ChangeExistingCode
@@ -27,7 +29,12 @@ class App:
 
             code_generator = dspy.Predict(ChangeExistingCode)
 
-            feedback = PrintFeedback(TestFeedback(PROJECT_DIR, TEST_FILE))
+            feedback = FeedbackChain(
+                [
+                    PrintFeedback(TestFeedback(PROJECT_DIR, TEST_FILE)),
+                    PrintFeedback(ManualFeedback())
+                ]
+            )
 
             res = code_generator(
                 current_code=prod_code,
@@ -41,13 +48,9 @@ class App:
             res = feedback.get_feedback()
 
             if res.is_ok():
-                approve = input("\nDo you want to commit these changes? (y/n): ").strip().lower()
-                if approve == "y":
-                    self._commit_changes.commit()
-                else:
-                    self._revert_changes.revert()
+                self._commit_changes.commit()
             else:
-                print("❌ Tests failed. Reverting changes...")
+                print("❌ Reverting changes...")
                 self._revert_changes.revert()
 
 
