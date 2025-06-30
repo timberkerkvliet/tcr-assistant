@@ -11,7 +11,7 @@ class ChangeCodeIterator:
         self._main_goal = main_goal
 
     def run(self) -> bool:
-        extra_constraints = []
+        feedback: str = ''
 
         while True:
             with open(self._target_path) as f:
@@ -22,7 +22,7 @@ class ChangeCodeIterator:
             res = code_generator(
                 current_code=prod_code,
                 main_goal=self._main_goal,
-                constraints=self._feedback.get_constraint() + '\n'.join(extra_constraints)
+                constraints=self._feedback.get_constraint() + feedback
             )
 
             with open(self._target_path, 'wb') as f:
@@ -33,4 +33,4 @@ class ChangeCodeIterator:
             if res.is_ok():
                 return True
 
-            extra_constraints.append(res.why)
+            feedback = res.why
