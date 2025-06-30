@@ -2,6 +2,7 @@ import os
 
 import dspy
 
+from xp_assistant.feedback.print_feedback import PrintFeedback
 from xp_assistant.feedback.test_feedback import TestFeedback
 from xp_assistant.signature import ChangeExistingCode
 from xp_assistant.version_control.commit import CommitChanges, GitCommit, CommitPrintLine
@@ -26,7 +27,7 @@ class App:
 
             code_generator = dspy.Predict(ChangeExistingCode)
 
-            feedback = TestFeedback(PROJECT_DIR, TEST_FILE)
+            feedback = PrintFeedback(TestFeedback(PROJECT_DIR, TEST_FILE))
 
             res = code_generator(
                 current_code=prod_code,

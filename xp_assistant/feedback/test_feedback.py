@@ -14,6 +14,9 @@ class TestFeedback(FeedbackMechanism):
         self._directory = directory
         self._test_file = test_file
 
+    def get_description(self) -> str:
+        return 'Running tests'
+
     def get_constraint(self) -> str:
         with open(f'{self._directory}/{self._test_file}') as f:
             test_code = f.read()
@@ -28,6 +31,6 @@ class TestFeedback(FeedbackMechanism):
             text=True
         )
         if result.returncode == 0:
-            return Ok()
+            return Ok(description='Tests passed')
 
         return NotOk(f"Test failed:\n{result.stdout}\n{result.stderr}")
