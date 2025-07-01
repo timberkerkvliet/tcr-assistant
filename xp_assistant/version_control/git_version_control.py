@@ -1,8 +1,8 @@
 import subprocess
 from logging import Logger
 
-from source_code import SourceCodeFile
-from version_control.version_control import VersionControl
+from xp_assistant.source_code import SourceCodeFile
+from xp_assistant.version_control.version_control import VersionControl
 
 
 class GitVersionControl(VersionControl):

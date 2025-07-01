@@ -3,6 +3,7 @@ from logging import Logger
 
 import dspy
 
+from xp_assistant.add_behavior_step import AddBehaviorStep
 from xp_assistant.refactor_step import RefactorStep
 from xp_assistant.source_code import SourceCodePair, SourceCodeFile
 from xp_assistant.version_control.git_version_control import GitVersionControl
@@ -18,23 +19,13 @@ class App:
         self._version_control = version_control
         self._logger = logger
 
-    def run(self):
+    def run(self, source_code_pair: SourceCodePair):
         while True:
+            AddBehaviorStep(self._version_control, self._logger).run(source_code_pair)
             RefactorStep(
                 self._version_control,
                 self._logger
-            ).run(
-                SourceCodePair(
-                    production_code=SourceCodeFile(
-                        project_path=PROJECT_DIR,
-                        file_path=PROD_FILE
-                    ),
-                    test_code=SourceCodeFile(
-                        project_path=PROJECT_DIR,
-                        file_path=TEST_FILE
-                    )
-                )
-            )
+            ).run(source_code_pair)
 
 
 api_key = os.environ["OPENAI_KEY"]
@@ -48,6 +39,9 @@ PROD_FILE = 'fibonacci/fibo.py'
 
 logger = Logger('default')
 
-app = App(GitVersionControl(logger))
+app = App(GitVersionControl(logger), logger)
 
-app.run()
+app.run(SourceCodePair(
+    production_code=SourceCodeFile(PROJECT_DIR, PROD_FILE),
+    test_code=SourceCodeFile(PROJECT_DIR, TEST_FILE)
+))
