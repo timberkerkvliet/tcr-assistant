@@ -1,5 +1,6 @@
 from logging import Logger
 
+from xp_assistant.create_behavior_step import CreateBehaviorStep
 from xp_assistant.add_behavior_step import AddBehaviorStep
 from xp_assistant.refactor_step import RefactorStep
 from xp_assistant.source_code import SourceCodePair
@@ -16,6 +17,9 @@ class App:
         self._logger = logger
 
     def run(self, source_code_pair: SourceCodePair):
+        if source_code_pair.production_code.is_empty():
+            CreateBehaviorStep(self._version_control, self._logger).run(source_code_pair)
+
         while True:
             print(f'Working on {source_code_pair.production_code.file_path}')
             print('========================================================')
