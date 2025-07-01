@@ -6,6 +6,7 @@ from xp_assistant.source_code import SourceCodeFile
 from xp_assistant.feedback.feedback import FeedbackMechanism
 from xp_assistant.signature import ChangeExistingCode
 
+MAX_ATTEMPTS = 3
 
 class ChangeCodeIterator:
     def __init__(
@@ -23,7 +24,7 @@ class ChangeCodeIterator:
     def run(self) -> bool:
         feedback: str = ''
 
-        while True:
+        for _ in range(MAX_ATTEMPTS):
             code_generator = dspy.Predict(ChangeExistingCode)
 
             self._logger.info('Generating code...')
@@ -42,3 +43,5 @@ class ChangeCodeIterator:
                 return True
 
             feedback = res.why
+
+        return False

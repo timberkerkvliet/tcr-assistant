@@ -30,7 +30,9 @@ class CreateBehaviorStep:
         )
 
         if not iterator.run():
-            raise NotImplementedError
+            self._version_control.revert(source_code_pair.production_code)
+            self._logger.warning('Step failed')
+            return
 
         feedback = FeedbackChain(
             [
