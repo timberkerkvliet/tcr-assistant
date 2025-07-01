@@ -26,7 +26,7 @@ class App:
 
             if choice == "a":
                 AddBehaviorStep(self._version_control, self._logger).run(source_code_pair)
-                break
+                continue
             elif choice == 'r':
                 RefactorStep(
                     self._version_control,

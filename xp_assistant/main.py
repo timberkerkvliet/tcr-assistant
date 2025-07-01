@@ -9,15 +9,15 @@ from xp_assistant.source_code import SourceCodePair, SourceCodeFile
 from xp_assistant.version_control.git_version_control import GitVersionControl
 
 # Load config from YAML
-with open("xp-assistant.yaml", "r") as f:
+with open("xp-assistant.yml", "r") as f:
     config = yaml.safe_load(f)
 
 # Set up LLM with config values
-gemini = dspy.LM(model=config["model"], api_key=config["model_api_key"])
-dspy.configure(lm=gemini)
+llm = dspy.LM(model=config['llm']['model'], api_key=config['llm']['api_key'])
+dspy.configure(lm=llm)
 
 # Project paths
-PROJECT_DIR = config["project_dir"]
+PROJECT_DIR = str(Path.cwd())
 TEST_FILE = config["test_file"]
 PROD_FILE = config["prod_file"]
 

@@ -25,7 +25,7 @@ class AddBehaviorStep:
         iterator = ChangeCodeIterator(
             feedback=feedback,
             target=source_code_pair.test_code,
-            main_goal=f'Add new test: {test_description}',
+            main_goal=f'Add a new test and return the whole file: {test_description}',
             logger=self._logger
         )
 
@@ -41,7 +41,8 @@ class AddBehaviorStep:
         iterator = ChangeCodeIterator(
             feedback=feedback,
             target=source_code_pair.production_code,
-            main_goal=f'Make all - including the new - test pass with minimal changes'
+            main_goal=f'Make all - including the new - test pass with minimal changes',
+            logger=self._logger
         )
 
         if iterator.run():
