@@ -12,14 +12,17 @@ from xp_assistant.version_control.version_control import VersionControl
 class App:
     def __init__(
         self,
-        version_control: VersionControl
+        version_control: VersionControl,
+        logger: Logger
     ):
         self._version_control = version_control
+        self._logger = logger
 
     def run(self):
         while True:
             RefactorStep(
-                self._version_control
+                self._version_control,
+                self._logger
             ).run(
                 SourceCodePair(
                     production_code=SourceCodeFile(

@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 import subprocess
+from logging import Logger
 
 from xp_assistant.source_code import SourceCodeFile
-from xp_assistant.feedback.feedback import FeedbackMechanism, Ok, NotOk, InputDescription
+from xp_assistant.feedback.feedback import FeedbackMechanism, Ok, NotOk
 
 
 class TestFeedback(FeedbackMechanism):
     def __init__(
         self,
-        test_file: SourceCodeFile
+        test_file: SourceCodeFile,
+        logger: Logger
     ):
         self._test_file = test_file
+        self._logger = logger
 
     def get_description(self) -> str:
         return 'Running tests'
@@ -27,6 +30,8 @@ class TestFeedback(FeedbackMechanism):
             text=True
         )
         if result.returncode == 0:
+            self._logger.info('Tests passed')
             return Ok(description='Tests passed')
 
+        self._logger.info('Tests failed')
         return NotOk(f"Test failed:\n{result.stdout}\n{result.stderr}")
