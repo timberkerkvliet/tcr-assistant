@@ -1,28 +1,25 @@
 import os
+from logging import Logger
 
 import dspy
 
 from xp_assistant.refactor_step import RefactorStep
 from xp_assistant.source_code import SourceCodePair, SourceCodeFile
-from xp_assistant.version_control.commit import CommitChanges, GitCommit, CommitPrintLine
-from xp_assistant.version_control.revert import RevertChanges, GitRevert
-from xp_assistant.version_control.revert import RevertPrintLine
+from xp_assistant.version_control.git_version_control import GitVersionControl
+from xp_assistant.version_control.version_control import VersionControl
 
 
 class App:
     def __init__(
         self,
-        commit_changes: CommitChanges,
-        revert_changes: RevertChanges
+        version_control: VersionControl
     ):
-        self._commit_changes = commit_changes
-        self._revert_changes = revert_changes
+        self._version_control = version_control
 
     def run(self):
         while True:
             RefactorStep(
-                self._commit_changes,
-                self._revert_changes
+                self._version_control
             ).run(
                 SourceCodePair(
                     production_code=SourceCodeFile(
@@ -46,9 +43,8 @@ PROJECT_DIR = '/Users/timberkerkvliet/PycharmProjects/fibonacci'
 TEST_FILE = 'fibonacci/test_fibonacci.py'
 PROD_FILE = 'fibonacci/fibo.py'
 
-commit_changes = CommitPrintLine(GitCommit(PROJECT_DIR))
-revert_changes = RevertPrintLine(GitRevert(PROJECT_DIR))
+logger = Logger('default')
 
-app = App(commit_changes, revert_changes)
+app = App(GitVersionControl(logger))
 
 app.run()

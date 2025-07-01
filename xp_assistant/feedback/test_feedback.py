@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import subprocess
 
-from source_code import SourceCodeFile
+from xp_assistant.source_code import SourceCodeFile
 from xp_assistant.feedback.feedback import FeedbackMechanism, Ok, NotOk, InputDescription
 
 

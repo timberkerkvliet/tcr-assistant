@@ -1,6 +1,6 @@
 import dspy
 
-from source_code import SourceCodeFile
+from xp_assistant.source_code import SourceCodeFile
 from xp_assistant.feedback.feedback import FeedbackMechanism
 from xp_assistant.signature import ChangeExistingCode
 
