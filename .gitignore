@@ -1,2 +1,4 @@
 .env
 .idea
+xp_assistant.egg-info/
+build/
