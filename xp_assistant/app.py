@@ -21,6 +21,7 @@ class App:
             print('========================================================')
             print('"A": Add behavior')
             print('"R": Refactor')
+            print('"T": Refactor tests')
             choice = input("Enter choice: ").strip().lower()
 
             if choice == "a":
@@ -31,5 +32,10 @@ class App:
                     self._version_control,
                     self._logger
                 ).run(source_code_pair)
+            elif choice == 't':
+                RefactorStep(
+                    self._version_control,
+                    self._logger
+                ).run(SourceCodePair(test_code=source_code_pair.test_code, production_code=source_code_pair.test_code))
             else:
                 print("Invalid choice, please try again.")
