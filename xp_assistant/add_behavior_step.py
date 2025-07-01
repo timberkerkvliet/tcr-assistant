@@ -25,7 +25,8 @@ class AddBehaviorStep:
         iterator = ChangeCodeIterator(
             feedback=feedback,
             target=source_code_pair.test_code,
-            main_goal=f'Add new test: {test_description}'
+            main_goal=f'Add new test: {test_description}',
+            logger=self._logger
         )
 
         if not iterator.run():

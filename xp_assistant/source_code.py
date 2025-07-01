@@ -19,4 +19,3 @@ class SourceCodeFile:
 class SourceCodePair:
     production_code: SourceCodeFile
     test_code: SourceCodeFile
-

@@ -26,7 +26,8 @@ class RefactorStep:
         iterator = ChangeCodeIterator(
             feedback=feedback,
             target=source_code_pair.production_code,
-            main_goal=f'Refactor with hint: {refactor_hint}'
+            main_goal=f'Refactor with hint: {refactor_hint}',
+            logger=self._logger
         )
 
         if iterator.run():
