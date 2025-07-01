@@ -2,11 +2,8 @@ import os
 
 import dspy
 
-from xp_assistant.change_code_iterator import ChangeCodeIterator
-from xp_assistant.feedback.feedback_chain import FeedbackChain
-from xp_assistant.feedback.manual_feedback import ManualFeedback
-from xp_assistant.feedback.print_feedback import PrintFeedback
-from xp_assistant.feedback.test_feedback import TestFeedback
+from xp_assistant.refactor_step import RefactorStep
+from xp_assistant.source_code import SourceCodePair, SourceCodeFile
 from xp_assistant.version_control.commit import CommitChanges, GitCommit, CommitPrintLine
 from xp_assistant.version_control.revert import RevertChanges, GitRevert
 from xp_assistant.version_control.revert import RevertPrintLine
@@ -23,27 +20,21 @@ class App:
 
     def run(self):
         while True:
-            refactor_hint = input("Refactor hint: ")
-
-            feedback = FeedbackChain(
-                [
-                    PrintFeedback(TestFeedback(PROJECT_DIR, TEST_FILE)),
-                    PrintFeedback(ManualFeedback())
-                ]
+            RefactorStep(
+                self._commit_changes,
+                self._revert_changes
+            ).run(
+                SourceCodePair(
+                    production_code=SourceCodeFile(
+                        project_path=PROJECT_DIR,
+                        file_path=PROD_FILE
+                    ),
+                    test_code=SourceCodeFile(
+                        project_path=PROJECT_DIR,
+                        file_path=TEST_FILE
+                    )
+                )
             )
-
-            iterator = ChangeCodeIterator(
-                feedback=feedback,
-                target_path=f'{PROJECT_DIR}/{PROD_FILE}',
-                main_goal=f'Refactor with hint: {refactor_hint}'
-            )
-
-            if iterator.run():
-                self._commit_changes.commit()
-            else:
-                self._revert_changes.revert()
-
-
 
 
 api_key = os.environ["OPENAI_KEY"]
