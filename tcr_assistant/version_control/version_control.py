@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from xp_assistant.source_code import SourceCodeFile
+from tcr_assistant.source_code import SourceCodeFile
 
 
 class VersionControl(ABC):

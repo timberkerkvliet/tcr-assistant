@@ -3,8 +3,8 @@ from __future__ import annotations
 import subprocess
 from logging import Logger
 
-from xp_assistant.source_code import SourceCodeFile
-from xp_assistant.feedback.feedback import FeedbackMechanism, Accepted, NotAccepted
+from tcr_assistant.source_code import SourceCodeFile
+from tcr_assistant.feedback.feedback import FeedbackMechanism, Accepted, NotAccepted
 
 
 class TestFeedback(FeedbackMechanism):

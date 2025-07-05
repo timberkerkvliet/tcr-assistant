@@ -1,10 +1,10 @@
 from logging import Logger
 
-from xp_assistant.create_behavior_step import CreateBehaviorStep
-from xp_assistant.add_behavior_step import AddBehaviorStep
-from xp_assistant.refactor_step import RefactorStep
-from xp_assistant.source_code import SourceCodePair
-from xp_assistant.version_control.version_control import VersionControl
+from tcr_assistant.create_behavior_step import CreateBehaviorStep
+from tcr_assistant.add_behavior_step import AddBehaviorStep
+from tcr_assistant.refactor_step import RefactorStep
+from tcr_assistant.source_code import SourceCodePair
+from tcr_assistant.version_control.version_control import VersionControl
 
 
 class App:

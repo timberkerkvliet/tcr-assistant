@@ -6,9 +6,9 @@ from pathlib import Path
 
 import dspy
 
-from xp_assistant.app import App
-from xp_assistant.source_code import SourceCodePair, SourceCodeFile
-from xp_assistant.version_control.git_version_control import GitVersionControl
+from tcr_assistant.app import App
+from tcr_assistant.source_code import SourceCodePair, SourceCodeFile
+from tcr_assistant.version_control.git_version_control import GitVersionControl
 
 # Load config from YAML
 with open("xp-assistant.yml", "r") as f:

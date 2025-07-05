@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from xp_assistant.feedback.feedback import FeedbackMechanism, Accepted, NotAccepted
+from tcr_assistant.feedback.feedback import FeedbackMechanism, Accepted, NotAccepted
 
 
 class ManualFeedback(FeedbackMechanism):

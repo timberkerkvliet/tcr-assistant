@@ -2,9 +2,9 @@ from logging import Logger
 
 import dspy
 
-from xp_assistant.source_code import SourceCodeFile
-from xp_assistant.feedback.feedback import FeedbackMechanism
-from xp_assistant.signature import ChangeExistingCode
+from tcr_assistant.source_code import SourceCodeFile
+from tcr_assistant.feedback.feedback import FeedbackMechanism
+from tcr_assistant.signature import ChangeExistingCode
 
 MAX_ATTEMPTS = 3
 

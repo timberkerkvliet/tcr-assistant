@@ -1,11 +1,11 @@
 from logging import Logger
 
-from xp_assistant.create_code_iterator import CreateCodeIterator
-from xp_assistant.feedback.feedback_chain import FeedbackChain
-from xp_assistant.feedback.manual_feedback import ManualFeedback
-from xp_assistant.feedback.test_feedback import TestFeedback
-from xp_assistant.source_code import SourceCodePair
-from xp_assistant.version_control.version_control import VersionControl
+from tcr_assistant.create_code_iterator import CreateCodeIterator
+from tcr_assistant.feedback.feedback_chain import FeedbackChain
+from tcr_assistant.feedback.manual_feedback import ManualFeedback
+from tcr_assistant.feedback.test_feedback import TestFeedback
+from tcr_assistant.source_code import SourceCodePair
+from tcr_assistant.version_control.version_control import VersionControl
 
 
 class CreateBehaviorStep:
