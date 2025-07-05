@@ -2,3 +2,4 @@
 .idea
 tcr_assistant.egg-info/
 build/
+.pdm-python
