@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from xp_assistant.feedback.feedback import FeedbackMechanism, Ok, NotOk
+from xp_assistant.feedback.feedback import FeedbackMechanism, Accepted, NotAccepted
 
 
 class FeedbackChain(FeedbackMechanism):
@@ -13,10 +13,10 @@ class FeedbackChain(FeedbackMechanism):
     def get_constraint(self) -> str:
         return '\n'.join(mechanism.get_constraint() for mechanism in self._mechanisms)
 
-    def get_feedback(self) -> Ok | NotOk:
+    def get_feedback(self) -> Accepted | NotAccepted:
         for mechanism in self._mechanisms:
             result = mechanism.get_feedback()
             if not result.is_ok():
                 return result
 
-        return Ok('all ok')
+        return Accepted('all ok')

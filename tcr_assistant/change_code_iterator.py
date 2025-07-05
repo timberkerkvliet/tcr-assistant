@@ -4,11 +4,11 @@ import dspy
 
 from xp_assistant.source_code import SourceCodeFile
 from xp_assistant.feedback.feedback import FeedbackMechanism
-from xp_assistant.signature import CreateNewCode
+from xp_assistant.signature import ChangeExistingCode
 
 MAX_ATTEMPTS = 3
 
-class CreateCodeIterator:
+class ChangeCodeIterator:
     def __init__(
         self,
         feedback: FeedbackMechanism,
@@ -25,10 +25,11 @@ class CreateCodeIterator:
         feedback: str = ''
 
         for _ in range(MAX_ATTEMPTS):
-            code_generator = dspy.Predict(CreateNewCode)
+            code_generator = dspy.Predict(ChangeExistingCode)
 
             self._logger.info('Generating code...')
             res = code_generator(
+                current_code=self._target.read_code(),
                 main_goal=self._main_goal,
                 constraints=self._feedback.get_constraint() + feedback
             )
@@ -41,6 +42,6 @@ class CreateCodeIterator:
             if res.is_ok():
                 return True
 
-            feedback = res.why
+            feedback = res.explanation
 
         return False

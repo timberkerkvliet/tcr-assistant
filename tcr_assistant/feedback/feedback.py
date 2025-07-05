@@ -13,7 +13,7 @@ class InputDescription:
 
 
 @dataclass(frozen=True)
-class Ok:
+class Accepted:
     description: str
 
     @staticmethod
@@ -21,8 +21,8 @@ class Ok:
         return True
 
 @dataclass(frozen=True)
-class NotOk:
-    why: str
+class NotAccepted:
+    explanation: str
 
     @staticmethod
     def is_ok() -> bool:
@@ -32,13 +32,5 @@ class NotOk:
 
 class FeedbackMechanism(ABC):
     @abstractmethod
-    def get_description(self) -> str:
-        """Get all sorts of feedback on code"""
-
-    @abstractmethod
-    def get_constraint(self) -> str:
-        """Get all sorts of feedback on code"""
-
-    @abstractmethod
-    def get_feedback(self) -> Ok | NotOk:
+    def get_feedback(self) -> Accepted | NotAccepted:
         """Get all sorts of feedback on code"""
