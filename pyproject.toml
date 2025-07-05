@@ -1,7 +1,3 @@
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
 [project]
 name = "tcr-assistant"
 version = "0.1.0"
@@ -9,16 +5,9 @@ description = "AI assistant for TCR"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "dspy-ai",
+    "dspy",
     "google-generativeai",
 ]
-authors = [
-    {name = "Timber Kerkvliet", email = "timberkerkvliet@gmail.com"},
-]
-license = {text = "MIT"}
 
 [tool.setuptools.packages.find]
 where = ["."]
-
-[tool.pdm]
-distribution = true
