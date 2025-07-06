@@ -52,4 +52,5 @@ class AddBehaviorStep:
             context=Context.empty()
         )
 
+        self._version_control.commit(source_code_pair.test_code)
         self._version_control.commit(source_code_pair.production_code)
