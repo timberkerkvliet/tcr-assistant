@@ -1,3 +1,5 @@
+from typing import List
+
 import dspy
 
 
@@ -9,7 +11,7 @@ class ChangeExistingCode(dspy.Signature):
 
     main_goal = dspy.InputField(desc="The main goal of the change")
 
-    constraints = dspy.InputField(desc="Everything the output code needs to satisfy")
+    constraints = dspy.InputField(desc="A list of constraints", typ=List[str])
 
     python_code = dspy.OutputField(
         desc="The output code",
@@ -19,9 +21,9 @@ class ChangeExistingCode(dspy.Signature):
 
 
 class CreateNewCode(dspy.Signature):
-    main_goal = dspy.InputField(desc="The main goal of the code")
+    main_goal = dspy.InputField(desc="What to achieve of the code")
 
-    constraints = dspy.InputField(desc="Everything the output code needs to satisfy")
+    constraints = dspy.InputField(desc="A list of constraints", typ=List[str])
 
     python_code = dspy.OutputField(
         desc="The output code",

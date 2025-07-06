@@ -1,51 +1,52 @@
 from logging import Logger
 
-from tcr_assistant.change_code_iterator import ChangeCodeIterator
-from tcr_assistant.feedback.feedback_chain import FeedbackChain
+from tcr_assistant.code_generator.code_generator import TestCodeGenerator, ImplementationCodeGenerator
 from tcr_assistant.feedback.manual_feedback import ManualFeedback
 from tcr_assistant.feedback.test_feedback import TestFeedback
+from tcr_assistant.feedback_loop import FeedbackLoop
 from tcr_assistant.source_code import SourceCodePair
 from tcr_assistant.version_control.version_control import VersionControl
 
 
 class AddBehaviorStep:
-    def __init__(self, version_control: VersionControl, logger: Logger):
+    def __init__(
+        self,
+        version_control: VersionControl,
+        logger: Logger,
+        test_code_generator: TestCodeGenerator,
+        implementation_code_generator: ImplementationCodeGenerator,
+        feedback_loop: FeedbackLoop
+    ):
         self._version_control = version_control
         self._logger = logger
+        self._test_code_generator = test_code_generator
+        self._implementation_code_generator = implementation_code_generator
+        self._feedback_loop = feedback_loop
 
     def run(self, source_code_pair: SourceCodePair):
         test_description = input("Describe new test: ")
+        existing_test_code = source_code_pair.test_code.read_code()
+        existing_production_code = source_code_pair.production_code.read_code()
 
-        feedback = FeedbackChain(
-            [
-                ManualFeedback()
-            ]
-        )
-
-        iterator = ChangeCodeIterator(
-            feedback=feedback,
+        self._feedback_loop.run(
             target=source_code_pair.test_code,
-            main_goal=f'Add a new test and return the whole file: {test_description}',
-            logger=self._logger
+            code_generator=lambda context: self._test_code_generator.add_tests(
+                new_tests_description=test_description,
+                existing_test_code=existing_test_code,
+                context=context
+            ),
+            feedback_mechanism=ManualFeedback()
         )
 
-        if not iterator.run():
-            raise NotImplementedError
-
-        feedback = FeedbackChain(
-            [
-                TestFeedback(source_code_pair.test_code, self._logger)
-            ]
+        self._feedback_loop.run(
+            target=source_code_pair.test_code,
+            code_generator=lambda context: self._implementation_code_generator.implement(
+                test_code=source_code_pair.test_code.read_code(),
+                existing_production_code=existing_production_code,
+                context=context
+            ),
+            feedback_mechanism=TestFeedback(source_code_pair.test_code, self._logger)
         )
 
-        iterator = ChangeCodeIterator(
-            feedback=feedback,
-            target=source_code_pair.production_code,
-            main_goal=f'Make all - including the new - test pass with minimal changes',
-            logger=self._logger
-        )
+        self._version_control.commit(source_code_pair.production_code)
 
-        if iterator.run():
-            self._version_control.commit(source_code_pair.production_code)
-        else:
-            self._version_control.revert(source_code_pair.production_code)

@@ -4,7 +4,7 @@ import dspy
 
 from tcr_assistant.source_code import SourceCodeFile
 from tcr_assistant.feedback.feedback import FeedbackMechanism
-from tcr_assistant.signature import ChangeExistingCode
+from tcr_assistant.code_generator.signature import ChangeExistingCode
 
 MAX_ATTEMPTS = 3
 
