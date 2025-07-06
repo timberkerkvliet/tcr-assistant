@@ -23,15 +23,15 @@ class App:
         while True:
             print(f'Working on {source_code_pair.production_code.file_path}')
             print('========================================================')
-            print('"A": Add behavior')
-            print('"R": Refactor')
-            print('"T": Refactor tests')
+            print('"B": Add behavior')
+            print('"P": Refactor production code')
+            print('"T": Refactor test code')
             choice = input("Enter choice: ").strip().lower()
 
-            if choice == "a":
+            if choice == "b":
                 self._add_behavior_step.run(source_code_pair)
                 continue
-            elif choice == 'r':
+            elif choice == 'p':
                 raise NotImplementedError
             elif choice == 't':
                 raise NotImplementedError

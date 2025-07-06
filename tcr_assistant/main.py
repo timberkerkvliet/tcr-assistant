@@ -8,7 +8,11 @@ import dspy
 
 from tcr_assistant.add_behavior_step import AddBehaviorStep
 from tcr_assistant.app import App
-from tcr_assistant.code_generator.context import Context
+from tcr_assistant.code_generator.context import ContextMapper
+from tcr_assistant.code_generator.context_elements.create_new_test_file import CreateNewTestFile, \
+    map_how_to_create_new_test_file_unittest
+from tcr_assistant.code_generator.context_elements.failed_attempt import FailedAttempt, map_failed_attempt
+from tcr_assistant.code_generator.context_elements.tests import Tests, map_test_code
 from tcr_assistant.code_generator.dspy_code_generator import DsPyTestCodeCodeGenerator, DsPyImplementationCodeGenerator
 from tcr_assistant.feedback_loop import FeedbackLoop
 from tcr_assistant.source_code import SourceCodePair, SourceCodeFile
@@ -43,8 +47,13 @@ source_code_pair = SourceCodePair(
 
 version_control = GitVersionControl(logger)
 
-def context_mapper(context: Context) -> str:
-    return ''
+context_mapper = ContextMapper(
+    {
+        Tests: map_test_code,
+        CreateNewTestFile: map_how_to_create_new_test_file_unittest,
+        FailedAttempt: map_failed_attempt
+    }
+)
 
 app = App(
     version_control,

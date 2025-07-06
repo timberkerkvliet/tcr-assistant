@@ -1,9 +1,9 @@
 from enum import Enum
 
-from tcr_assistant.code_generator.code_generator import Context
+from tcr_assistant.code_generator.code_generator import ContextElement
 
 
-class PythonTestFramework(Context, Enum):
+class PythonTestFramework(ContextElement, Enum):
     UNITTEST = 0
     PYTEST = 1
 

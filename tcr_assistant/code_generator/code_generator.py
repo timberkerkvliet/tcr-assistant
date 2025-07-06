@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from tcr_assistant.code_generator.context import Context
+from tcr_assistant.code_generator.context import ContextElement, Context
 
 
 class TestCodeGenerator(ABC):
@@ -9,7 +9,7 @@ class TestCodeGenerator(ABC):
     def add_tests(
         self,
         new_tests_description: str,
-        context: list[Context],
+        context: Context,
         existing_test_code: Optional[str] = None
     ) -> str:
         ...
@@ -19,7 +19,7 @@ class ImplementationCodeGenerator(ABC):
     def implement(
         self,
         test_code: str,
-        context: list[Context],
+        context: Context,
         existing_production_code: Optional[str] = None
     ) -> str:
         ...
@@ -30,7 +30,7 @@ class RefactoredTestCodeGenerator(ABC):
         self,
         test_code: str,
         refactor_goal: str,
-        context: list[Context]
+        context: Context,
     ) -> str:
         ...
 
@@ -41,6 +41,6 @@ class RefactoredProductionCodeGenerator(ABC):
         test_code: str,
         production_code: str,
         refactor_goal: str,
-        context: list[Context]
+        context: Context,
     ) -> str:
         ...

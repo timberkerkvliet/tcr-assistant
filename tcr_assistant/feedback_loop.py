@@ -1,13 +1,10 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from tcr_assistant.code_generator.context import Context
+from tcr_assistant.code_generator.context import ContextElement, Context
+from tcr_assistant.code_generator.context_elements.failed_attempt import FailedAttempt
 from tcr_assistant.feedback.feedback import FeedbackMechanism
-from tcr_assistant.source_code import SourceCodePair, SourceCodeFile
-
-@dataclass
-class FailedAttempt(Context):
-    why: str
+from tcr_assistant.source_code import SourceCodeFile
 
 
 class FeedbackLoop:
@@ -17,19 +14,19 @@ class FeedbackLoop:
     def run(
         self,
         target: SourceCodeFile,
-        code_generator: Callable[[list[Context]], str],
-        feedback_mechanism: FeedbackMechanism
+        code_generator: Callable[[Context], str],
+        feedback_mechanism: FeedbackMechanism,
+        context: Context
     ):
-        context = []
-
+        additional_elements: list[ContextElement] = []
         for _ in range(self._max_attempts):
-            generated_code = code_generator(context)
+            generated_code = code_generator(context.add_elements(additional_elements))
             target.write_code(generated_code)
             feedback_result = feedback_mechanism.get_feedback()
 
             if feedback_result.is_ok():
                 return
 
-            context = [FailedAttempt(feedback_result.explanation)]
+            additional_elements = [FailedAttempt(feedback_result.explanation)]
 
         raise NotImplementedError
