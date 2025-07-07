@@ -11,7 +11,13 @@ class GitVersionControl(VersionControl):
 
     def commit(self, source_code_file: SourceCodeFile):
         subprocess.run(
-            ['git', 'commit', '-am', 'TCR commit', source_code_file.file_path],
+            ['git', 'add', source_code_file.file_path],
+            cwd=source_code_file.project_path,
+            capture_output=True,
+            text=True
+        )
+        subprocess.run(
+            ['git', 'commit', '-m', 'TCR commit', source_code_file.file_path],
             cwd=source_code_file.project_path,
             capture_output=True,
             text=True
