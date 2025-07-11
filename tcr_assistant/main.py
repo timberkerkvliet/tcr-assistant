@@ -18,7 +18,7 @@ from tcr_assistant.feedback_loop import FeedbackLoop
 from tcr_assistant.source_code import SourceCodePair, SourceCodeFile
 from tcr_assistant.version_control.git_version_control import GitVersionControl
 
-with open("xp-assistant.yml", "r") as f:
+with open("tcr-assistant.yml", "r") as f:
     config = yaml.safe_load(f)
 
 llm = dspy.LM(model=config['llm']['model'], api_key=config['llm']['api_key'])
