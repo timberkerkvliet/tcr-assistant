@@ -16,12 +16,6 @@ class TestFeedback(FeedbackMechanism):
         self._test_file = test_file
         self._logger = logger
 
-    def get_description(self) -> str:
-        return 'Running tests'
-
-    def get_constraint(self) -> str:
-        return 'It needs to pass these tests: \n\n' + self._test_file.read_code()
-
     def get_feedback(self) -> Accepted | NotAccepted:
         result = subprocess.run(
             ["python", "-m", "unittest", self._test_file.file_path],
