@@ -24,7 +24,7 @@ class DsPyTestCodeCodeGenerator(TestCodeGenerator):
 
             return code_generator(
                 current_code=existing_test_code,
-                main_goal=f'Add these test(s): {new_tests_description}',
+                main_goal=f'Add these test(s) the the file and return all test code: {new_tests_description}',
                 constraints=context.map(self._context_mapper)
             ).python_code
 

@@ -1,2 +1,3 @@
 dspy
 google-generativeai
+coverage

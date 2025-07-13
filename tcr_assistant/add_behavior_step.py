@@ -48,7 +48,7 @@ class AddBehaviorStep:
                 existing_production_code=existing_production_code,
                 context=context
             ),
-            feedback_mechanism=TestFeedback(source_code_pair.test_code, self._logger),
+            feedback_mechanism=TestFeedback(source_code_pair, self._logger),
             context=Context.empty()
         )
 

@@ -21,6 +21,7 @@ class App:
             self._add_behavior_step.run(source_code_pair)
 
         while True:
+            print('========================================================')
             print(f'Working on {source_code_pair.production_code.file_path}')
             print('========================================================')
             print('"B": Add behavior')

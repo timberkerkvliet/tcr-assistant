@@ -7,6 +7,7 @@ requires-python = ">=3.9"
 dependencies = [
     "dspy",
     "google-generativeai",
+    "coverage"
 ]
 
 [tool.setuptools.packages.find]
